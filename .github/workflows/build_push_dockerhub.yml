@@ -1,7 +1,9 @@
 name: 'Docker'
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:    
       - 'omolade-ci'
 
@@ -16,7 +18,7 @@ env:
 jobs:
   build_and_push_to_registry:
     name: Build and push Docker image to Docker Hub
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
