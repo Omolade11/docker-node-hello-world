@@ -6,6 +6,7 @@ You can adapt the same approach to other languages but I chose Node because it's
 
 ## Setup
 
+
 First, checkout this project locally and then follow these steps:
 
 0. Go through the Docker [installation](https://docs.docker.com/installation/) and [getting started guide](https://docs.docker.com/mac/started/) before you start.
