@@ -1,0 +1,40 @@
+name: docker-deploy
+on:
+  pull_request:
+    types:
+      - closed
+    branches:    
+      - 'victor-main'
+
+  workflow_dispatch:
+  
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME}}
+
+jobs:
+
+  build_and_push_to_dockerhub:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}          
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
+      - name: Get Current Date 
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d--%M-%S')"
+
+      - name: Build Docker Image
+        run: docker build . --file Dockerfile --tag $DOCKERHUB_USERNAME/$REPOSITORY_NAME:${{ steps.date.outputs.date }}
+
+      - name: Push Docker Image to Docker Hub
+        run: docker push $DOCKERHUB_USERNAME/$REPOSITORY_NAME:${{ steps.date.outputs.date }}
