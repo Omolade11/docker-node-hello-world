@@ -2,9 +2,8 @@
 name: Deploy to ECR
 
 on:
- 
-  push:
-    branches: [ victor-main ]
+  schedule:
+    - cron: "*/5 * * * *"
 
   workflow_dispatch:
 
