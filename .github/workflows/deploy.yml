@@ -12,6 +12,13 @@ env:
   DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
   REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME}}
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: docker-node-hello-world
+  ECS_SERVICE: .
+  ECS_CLUSTER: arn:aws:ecs:us-east-1:004031006944:cluster/mu5a
+  ECS_TASK_DEFINTION: ECSdockerNode
+  CONTAINER_NAME: mu5a
+  
   
   
 jobs:
@@ -40,12 +47,9 @@ jobs:
         run: docker push $DOCKERHUB_USERNAME/$REPOSITORY_NAME:${{ steps.date.outputs.date }}
       # push-nodejs is the repository name
   # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
                    
