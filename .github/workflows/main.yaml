@@ -1,0 +1,49 @@
+name: Main Workflow
+
+on : 
+  push
+    branches:
+    - main
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pulling code
+        uses: actions/checkout@v3
+
+      - name: login to dockerhub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Pushing to dockerhub
+        run: |
+          docker build -t mshallom/simple-node .
+          docker push mshallom/simple-node:latest
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: pushing to github container registry
+        run: |
+          docker build . --tag ghcr.io/mshallom/simple-node:latest
+          docker push ghcr.io/mshallom/simple-node:latest
+
+      # - name: Login to ECR
+      #   uses: docker/login-action@v2
+      #   with:
+      #     registry: <aws-account-number>.dkr.ecr.<region>.amazonaws.com
+      #     username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
+
+      # - name: pushing into ECR
+
