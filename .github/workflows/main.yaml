@@ -1,9 +1,12 @@
 name: Main Workflow
 
-on : push
+on:
+  pull_request:
+    types: [closed]
 
 jobs:
-  login:
+  login_build_push:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
