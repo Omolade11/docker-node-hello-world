@@ -3,6 +3,17 @@ name: Main Workflow
 on:
   pull_request:
     types: [closed]
+    
+env:
+  DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME}}
+  AWS_REGION: us-east-1
+  ECR_REPOSITORY: docker-node-hello-world
+  ECS_SERVICE: .
+  ECS_CLUSTER: arn:aws:ecs:us-east-1:004031006944:cluster/mu5a
+  ECS_TASK_DEFINTION: ECSdockerNode
+  CONTAINER_NAME: mu5a
 
 jobs:
   login_build_push:
